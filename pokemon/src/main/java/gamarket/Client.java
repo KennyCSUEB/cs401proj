@@ -21,6 +21,8 @@ public class Client extends Application {
     private int height = 800;
     private PokemonCollection pokeCollection;
     private MoveCollection moveCollection;
+    private Stage window;
+    private boolean paused;
 
     public static void main(String args[]){
         launch(args);
@@ -31,13 +33,14 @@ public class Client extends Application {
      * start begins the application and is the main controller of it
      */
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Pokemon: East Bay");
-        primaryStage.setResizable(false);
+        window = primaryStage;
+        window.setTitle("Pokemon: East Bay");
+        window.setResizable(false);
         startMenu = new StartMenuGUI();
         startMenu.display();
         Scene scene = new Scene(gameInterface(startMenu.getNewUser(), startMenu.getUsername(), startMenu.getPassword()));
-
-        primaryStage.setScene(scene);
+        window.setScene(scene);
+        paused = false;
 
         ArrayList<String> input = new ArrayList<String>();
         scene.setOnKeyPressed(
@@ -70,15 +73,27 @@ public class Client extends Application {
                     if (input.contains("W")) {
                         updateGUI("w");
                         encounterCheck();
+                        if(paused){
+                            this.stop();
+                        }
                     } else if (input.contains("A")) {
                         updateGUI("a");
                         encounterCheck();
+                        if(paused){
+                            this.stop();
+                        }
                     } else if (input.contains("S")) {
                         updateGUI("s");
                         encounterCheck();
+                        if(paused){
+                            this.stop();
+                        }
                     } else if (input.contains("D")) {
                         updateGUI("d");
                         encounterCheck();
+                        if(paused){
+                            this.stop();
+                        }
                     }else if(input.contains("E")){
                         System.out.println("menu selected");
                     }
@@ -86,16 +101,18 @@ public class Client extends Application {
             }
         }.start();
 
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+
+        window.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 save();
-                primaryStage.close();
+                window.close();
                 System.exit(0);
             }
         });
 
-        primaryStage.show();
+        window.show();
     }
 
     /**
@@ -157,12 +174,21 @@ public class Client extends Application {
     public void encouter(){
         System.out.println("Pokemon encountered!");
         Encounter aEncounter = new Encounter(player, pokeCollection);
-        
+        EncounterGUI encounterGUI = new EncounterGUI();
+
         // begin the wild Pokemon encounter music.
         Soundtrack.stopMusic();                             // stop the previous music that was playing. 
         Soundtrack.loadMusic("wild_encounter.wav");
         Soundtrack.startMusic();                            // start the wild encounter music.
-        aEncounter.battle();
+
+        if(!paused){
+            paused = true;
+            window.setScene(new Scene(encounterGUI.display()));
+        }
+        System.out.println("TEST");
+
+        //aEncounter.battle();
+
         Soundtrack.stopMusic();                             // stop the Wild_Encounter music, since the battle is over.  
         Soundtrack.loadMusic("in_game1.wav");               // load in the previous music that was playing.
         Soundtrack.startMusic();                            // As the soundtrack files get bigger, probably will use two music variables 
