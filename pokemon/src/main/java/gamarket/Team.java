@@ -23,11 +23,10 @@ public class Team {
      * A team can hold at-most 6 Pokemon.
      * A player will start out with a Pikachu Pokemon in its team.  
      */
-    Team(PokemonCollection pc, MoveCollection mc)
+    Team(MoveCollection mc)
     {
-        myTeam = new Pokemon[6];  
-        myTeam[0] = pc.getPokemonAtIndex(2);
-        numOfPokesInTeam = 1;
+        myTeam = new Pokemon[6];
+        numOfPokesInTeam = 0;
         this.mc = mc;
     }
     
@@ -35,17 +34,21 @@ public class Team {
      * @return nothing.
      */
     public void displayTeam()
-    {
-        for(int i = 0; i < 6; i++)
-        {
-            if(myTeam[i] == null)
-            {
-                break;
-            }
-            System.out.println((i+1) + ". " + "Level " + myTeam[i].getIdentStats().getLevel() + " " + myTeam[i].getIdentStats().getName());
-        }
-    }
-    
+	{
+		for(int i = 0; i < 6; i++)
+		{
+			if(myTeam[i] == null)
+			{
+				break; 
+			}
+    		System.out.println((i+1) + ". " + "Level " + myTeam[i].getIdentStats().getLevel() + " " + myTeam[i].getIdentStats().getName()); 
+		}
+	}
+
+    public Pokemon getPokemonAtIndex(int index) {
+		return myTeam[index];
+	}
+
     /**
      * What it does: each Pokemon will have a numbered index/position, you can switch them around.
      * @param prevSpot this must be the old index/position of the Pokemon.
@@ -63,10 +66,16 @@ public class Team {
      * What it does: saves the current Player's team of Pokemons to a file.
      * @return nothing.
      */
-    public void saveTeam()
+    public void saveTeam(String user, Boolean... test)
     {
         // create a file object.
-        File newFile = new File("pokemonTeam.txt");
+        String filename;
+        if(test.length > 0 && test[0]==true){
+            filename = "./databaseFiles/pkmnCollectionFiles/poketeamFiles/" + user+ "_poketeam.txt";
+        }else{
+            filename ="./pokemon/databaseFiles/pkmnCollectionFiles/poketeamFiles/" + user+ "_poketeam.txt";
+        }
+        File newFile = new File(filename);
                 
         // create a file writer object to write data to a file.
         FileWriter fw;
@@ -129,8 +138,14 @@ public class Team {
      * @param filename this should be the save file that contains the Player's saved Pokemons.
      * @return nothing.
      */
-    public void loadTeam(String filename)
+    public void loadTeam(String user, Boolean... test)
     {
+        String filename = "";
+        if(test.length > 0 && test[0]==true){
+            filename = "./databaseFiles/pkmnCollectionFiles/poketeamFiles/" + user+ "_poketeam.txt";
+        }else{
+            filename ="./pokemon/databaseFiles/pkmnCollectionFiles/poketeamFiles/" + user+ "_poketeam.txt";
+        }
         // create a buffered reader to read in text.
         BufferedReader br;
         
@@ -206,6 +221,31 @@ public class Team {
     		}
     	}
     }
+    /**
+     * returns true if the player has any non fainted pokemon
+     */
+	public boolean hasActivePokemon() {
+		boolean hasActive = false;
+		for(int i = 0; i < this.numOfPokesInTeam; i++) {
+			if(myTeam[i].hasPokemonFainted() == false) {
+				hasActive = true;
+			}
+		}
+		return hasActive;
+	}
+    /**
+     * returns teams first non-fainted pokemon 
+     */
+	public Pokemon getActivePokemon() {
+        Pokemon activePokemon = myTeam[0];
+        for(int i = 0; i < this.numOfPokesInTeam; i++) {
+            if(myTeam[i].hasPokemonFainted() == false) {
+                activePokemon = myTeam[i];
+                break;
+            }
+        }
+        return activePokemon;
+	}
 }
 
 

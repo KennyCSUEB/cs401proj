@@ -25,10 +25,17 @@ public class PokemonCollection {
 	 * A constructor. It sets the number of Pokemons 'numPOKEs' to zero. 
 	 * It allocates the Pokemon array 'pokeArray' to size 7. 
 	 */
-	public PokemonCollection(MoveCollection mc) {
+	public PokemonCollection(MoveCollection mc, boolean... test) {
 		numPOKEs = 0;
 		pokeArray = new Pokemon[7];	
 		this.mc = mc; 
+		if(test.length > 0 && test[0] == true) {
+			loadData(true);
+		}
+		else {
+			loadData();
+		}
+		setDefaultMoves();
 	}
 		
 	/**
@@ -55,12 +62,18 @@ public class PokemonCollection {
 		
 	/**
 	 * The function uses a BufferedReader to read in data separated by commas in a given text file.
-	 * @param filename This is the data text file name (pokedata.txt). 
+	 * @param test optional parameter to tell which file to read from if testing 
 	 * The file should have id, name, gender, type, level, attack, special attack, speed, health, 
 	 * defense, special defense. 
 	 */
-	public void loadData(String filename) 
+	public void loadData(Boolean... test) 
 	{
+		String filename;
+		if(test.length > 0 && test[0] == true){
+            filename = "./databaseFiles/pokedata.txt";
+        }else{
+            filename = "./pokemon/databaseFiles/pokedata.txt";
+        }
 		// create a buffered reader to read in text.
 	    BufferedReader br;
 		      

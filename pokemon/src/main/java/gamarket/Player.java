@@ -22,7 +22,8 @@ public class Player {
     private String time1;
     private String time2;
     private String totalTime;
-    private PokemonCollection pokeTeam; //TODO
+    private Team pokeTeam;
+    private MoveCollection moveCollection;
     private PokemonCollection pokeDex; //TODO
 
     /**
@@ -32,6 +33,10 @@ public class Player {
      * @param pw gives the constructor the player's password
      **/
     public Player(Boolean newUser, String un, String pw) {
+
+        this.moveCollection = new MoveCollection();
+        this.pokeTeam = new Team(this.moveCollection);
+
         if (newUser) {
             Date originalDate = new Date();
             //format
@@ -45,6 +50,7 @@ public class Player {
             this.joinDate = formatter.format(originalDate);
             formatter = new SimpleDateFormat("HH:mm:ss");
             this.time1 = formatter.format(originalDate);
+            this.pokeTeam.loadTeam("default");
         } else {
             this.name = un;
             this.password = pw;
@@ -88,7 +94,7 @@ public class Player {
 
     public int getTotalPokemon(){ return totalPokemon; }
 
-    public PokemonCollection getPokeTeam(){ return pokeTeam; }
+    public Team getPokeTeam(){ return pokeTeam; }
 
     public PokemonCollection getPokeDex(){ return pokeDex; }
 
@@ -117,11 +123,11 @@ public class Player {
             this.totalPokemon = Integer.parseInt(temp[5]);
             this.joinDate = temp[6];
             this.totalTime = temp[7];
-            /* These lines of code are commented out due to errors when calling respective class methods
-            due to source files are not set up correctly yet
-            this.pokeTeam.loadData(name);
-            this.pokeDex.loadData(name);
-             */
+            this.pokeTeam.loadTeam(fileName);
+            //  These lines of code are commented out due to errors when calling respective class methods
+            // due to source files are not set up correctly yet
+            // this.pokeDex.loadData(name);
+            
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -1,0 +1,20 @@
+Electro Ball,Electric,Special,90
+Thunder,Electric,Special,110
+Water Pulse,Water,Special,60
+Slam,Normal,Physical,80
+Quick Attack,Normal,Physical,40
+Shadow Ball,Ghost,Special,80
+Dark Pulse,Dark,Special,80
+Drain Punch,Fighting,Physical,75
+Phantom Force,Ghost,Physical,90
+Flare Blitz,Fire,Physical,120
+Fire Fang,Fire,Physical,65
+Bite,Dark,Physical,60
+Ice Punch,Ice,Physical,75
+Psychic,Psychic,Special,90
+Earthquake,Ground,Physical,100
+Slash,Normal,Physical,70
+Drill Run,Ground,Physical,80
+Rock Slide,Rock,Physical,75
+Poison Jab,Poison,Physical,80
+Last Resort,Normal,Physical,140

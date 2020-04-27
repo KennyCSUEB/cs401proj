@@ -94,7 +94,7 @@ public class GridTest
         int[] expectedLoc = { 10, 10};
         assertArrayEquals(expectedLoc, freshGrid.getPlayerPosition());
 
-        File file = new File("./databaseFiles/gridFiles/save_Loadtest.txt");
+        File file = new File("./databaseFiles/gridFiles/save_Loadtest_gridData.txt");
         file.delete();
     }
 }

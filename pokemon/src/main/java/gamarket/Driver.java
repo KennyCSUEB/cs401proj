@@ -16,8 +16,11 @@ public class Driver {
         player.saveData();
         System.out.println(player.toString());
 
-        player = new Player(false, "david", "password");
-        System.out.println(player.toString());
+        //player = new Player(false, "david", "password");
+        PokemonCollection collection = new PokemonCollection();
+        collection.loadData("pokemon/databaseFiles/pokedata.txt");
+        Encounter test = new Encounter(player, collection);
+        test.battle();
 
         int badgeAmt = player.getBadges();
         badgeAmt--;

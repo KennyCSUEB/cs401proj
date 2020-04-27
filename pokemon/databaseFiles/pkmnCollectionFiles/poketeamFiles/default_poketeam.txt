@@ -1,0 +1,1 @@
+3,Pikachu,Male,Electric,100,229,218,306,274,196,218,Electro Ball,Thunder,Quick Attack,Slam

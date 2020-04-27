@@ -43,7 +43,12 @@ public class Pokemon{
 		this.DS = null; 
 		this.moveSet = null;
 	}
-	
+	/**
+	 * @return tells whether pokemon has fainted
+	 */
+	public boolean hasPokemonFainted() {
+		return this.DS.getHPCurrent() == 0;
+	}
 	/**
 	 * Changes the identity status of this Pokemon.
 	 * @param IS The Pokemon's new identity status. Should have id, name, gender, type, and level. 
@@ -127,21 +132,37 @@ public class Pokemon{
 	}
 	
 	/**
-	 * What it does: prints the Pokemon's move-set of four moves. 
-	 * @return nothing. 
+	 * What it does: Return a string of the Pokemon's move-set of four moves. 
+	 * @return String of Pokemon moves. 
 	 */
-	public void printPokemonMoves()
+	public String printPokemonMoves()
 	{
+		String result = "";
 		for(int i = 0; i < 4; i++)
 		{
 			if(moveSet[i] == null)
 			{
-				return; 
+				result+="";
+				continue;
 			}
-			System.out.println("Move #" + (i+1) + " " + moveSet[i].getMoveName());
+			result += "Move #" + Integer.toString(i) + " " + moveSet[i].getMoveName() + "\n";
 		}
+		return result; 
 	}
-	
+	/**
+	 * getter for the pokemons moveset
+	 */
+	public Move[] getPokemonMoveSet () {
+		return this.moveSet;
+	}
+	/**
+	 * Returns move at the index 0-3
+	 * @param index
+	 * @return move at the given index
+	 */
+	public Move getMove(int index) {
+		return this.moveSet[index];
+	}
 	/**
 	 * What it does: It allows to change one Pokemon's current move to a new move. 
 	 * @param newMove this should be the Pokemon's new move.

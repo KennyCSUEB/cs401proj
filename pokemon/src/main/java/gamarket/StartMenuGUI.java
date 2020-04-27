@@ -18,11 +18,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.Scanner;
 
 public class StartMenuGUI{
@@ -34,11 +31,16 @@ public class StartMenuGUI{
     private StackPane stackPane;
     private Scene scene;
     private ImageView pokemonEastBay;
-
+    private Soundtrack music;
+  
     /**
      * display sets up the window and background of the GUI
      */
     public void display(){
+        // Start the title music. 
+        Soundtrack.loadMusic("title_screen.wav");
+        Soundtrack.startMusic();
+
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setResizable(false);
@@ -50,6 +52,16 @@ public class StartMenuGUI{
         scene = new Scene(stackPane);
         window.setScene(scene);
         window.showAndWait();
+
+
+        // Stop the title music if we get into the game area. 
+        Soundtrack.stopMusic();
+        // Begin the in-game music and loops until the GUI window is 'X' out. 
+        Soundtrack.loadMusic("in_game1.wav");
+        Soundtrack.startMusic();
+ 
+
+
     }
 
     /**
