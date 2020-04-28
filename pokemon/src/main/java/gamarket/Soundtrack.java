@@ -21,7 +21,6 @@ public class Soundtrack {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
                 music = AudioSystem.getClip();
 			    music.open(audioInput);
-			    System.out.println("Music is Playing.");
 		    }
 		   else 
 		   {
