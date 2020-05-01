@@ -13,6 +13,7 @@ public class Encounter {
     private Player thePlayer; 
     private PokemonCollection collection;
     private Scanner scan = new Scanner(System.in);
+    private EncounterGUI eGUI; 
     
     /**
      * Encounter generates arandom pokemon from the Pokemon collection and 
@@ -26,15 +27,23 @@ public class Encounter {
         this.activePlayerPokemon = getPlayerActivePokemon();
         this.wildPokemon = generateWildPokemon();
         this.battling = true; 
-        
         this.attacker = true;
+      //  eGUI.setWildPokemon(this.wildPokemon);
+      //  Soundtrack.stopMusic();
+      //  Soundtrack.loadMusic("wild_encounter.wav");
+      //  Soundtrack.startMusic();
     }
     /**
      * Gets the first non-fainted pokemon from the players team
      * @return The first active Pokemon
      */
-    private Pokemon getPlayerActivePokemon() {
+    public Pokemon getPlayerActivePokemon() {
         return this.thePlayer.getPokeTeam().getActivePokemon();
+    }
+
+    public Team getPlayerTeam()
+    {
+        return this.thePlayer.getPokeTeam();
     }
 
     /**
@@ -52,9 +61,13 @@ public class Encounter {
      * to GUI
      */
     public void battle() {
-        System.out.println("battling a wild " + this.wildPokemon.getIdentStats().getName());
-        System.out.println("go " + this.activePlayerPokemon.getIdentStats().getName());
-        String inputString;
+     //   System.out.println("battling a wild " + this.wildPokemon.getIdentStats().getName());
+     //   System.out.println("go " + this.activePlayerPokemon.getIdentStats().getName());
+        
+      // eGUI.setText("A wild " + this.wildPokemon.getIdentStats().getName() + " appears!" +
+       //             "\nPlayer: Lets go " + this.activePlayerPokemon.getIdentStats().getName() + "!"); 
+       
+         String inputString;
         while(battling) {
             System.out.println("Type fight, bag, pokemon, or run");
             inputString = "";
@@ -104,7 +117,7 @@ public class Encounter {
      * @return String of whether the player is attacking 
      */
     public String getAttackStatus () {
-        return this.attacker ? " \n You are attacking":"You are deffending";
+        return this.attacker ? " \n You are attacking.":"You are defending.";
     }
     /**
      * handles when the player chooses the fight option
@@ -114,15 +127,31 @@ public class Encounter {
      */
     public String fight(String inputString) {
         String result = "";//this.attacker ? " \n You are attacking":"You are deffending";
-        //System.out.println(result);
-        // result += "\n" + 
-        // String inputString = getInput();
+        
+        
         if(inputString.equals("b")) {
             return "returning to main menu"; 
         }
         int moveNum = Integer.parseInt(inputString);
         if(moveNum > 3) {
-            return fight(getInput());
+            if(eGUI.getMove1UsedStatus())
+            {
+                return fight("0");
+            }
+            else if(eGUI.getMove2UsedStatus())
+            {
+                return fight("1");
+            }
+            else if(eGUI.getMove3UsedStatus())
+            {
+                return fight("2");
+            }
+            else if(eGUI.getMove4UsedStatus())
+            {
+                return fight("3");
+            }
+            else {} 
+            
         }
         Move attackMove;
         Move deffMove;
@@ -148,6 +177,7 @@ public class Encounter {
         }
 
         this.attacker = !this.attacker;
+        
         return result;
     }
 
@@ -215,16 +245,16 @@ public class Encounter {
     public String fainted () {
         String result = "";
         if(this.wildPokemon.hasPokemonFainted()) {
-            result =  this.wildPokemon.getIdentStats().getName() + "has fainted";
+            result =  this.wildPokemon.getIdentStats().getName() + " has fainted!";
             this.battling = false;
         }
         if(this.activePlayerPokemon.hasPokemonFainted()) {
-            result = this.activePlayerPokemon.getIdentStats().getName() + "has fainted.";
+            result = this.activePlayerPokemon.getIdentStats().getName() + " has fainted!";
             if(this.thePlayer.getPokeTeam().hasActivePokemon()) {
                 result += switchPokemon(getInput());
             }
             else {
-                result += "out of pokemon.";
+                result += " out of pokemon.";
                 this.battling = false;
                 return result;
             }
@@ -250,7 +280,7 @@ public class Encounter {
     /**
      * displays items in players bag
      */
-    private String displayItems() {
+    String displayItems() {
         //Bag playerBag this.player.getBag(); TODO make getBag Function
         //String bagString = playerBag.toString || itemsString();
         String result = "";
@@ -345,7 +375,7 @@ public class Encounter {
         int ran = generateRandomInt(0, 100);
         if(ran < runAwayChance) {
             battling = false;
-            return "Ran away succesful";
+            return "Ran away successful";
         }
         else {
             return "Run away was unsuccessful";
@@ -366,5 +396,15 @@ public class Encounter {
      */
     public int generateRandomInt (int min, int max) {
         return (int) (Math.random() * ((max-min))+min);
+    }
+
+    public boolean getAttacker()
+    {
+        return this.attacker;
+    }
+
+    public void setAttacker(boolean status)
+    {
+        this.attacker = status; 
     }
 }
